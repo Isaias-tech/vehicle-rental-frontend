@@ -17,7 +17,7 @@ export const createAppRouter = () => {
       },
     },
     {
-      path: '/sign-up',
+      path: '/register',
       lazy: async () => {
         const { SignUp } = await import('./pages/auth/SignUp');
         return { Component: SignUp };
@@ -26,8 +26,8 @@ export const createAppRouter = () => {
     {
       path: '/home',
       lazy: async () => {
-        const { ProtectorRoutes } = await import('./pages/ProtectecRoutes');
-        return { Component: ProtectorRoutes };
+        const { ProtectedRoutes } = await import('./pages/ProtectedRoutes');
+        return { Component: ProtectedRoutes };
       },
       children: [
         {
@@ -44,6 +44,15 @@ export const createAppRouter = () => {
                   './pages/private/SearchPage'
                 );
                 return { Component: SearchPage };
+              },
+            },
+            {
+              path: '/home/moreinformation',
+              lazy: async () => {
+                const { CarMoreInformation } = await import(
+                  './pages/private/CarMoreInformation'
+                );
+                return { Component: CarMoreInformation };
               },
             },
             {
@@ -85,77 +94,79 @@ export const createAppRouter = () => {
                 return { Component: CarReports };
               },
             },
+            {
+              path: '/home/employee/client-details',
+              lazy: async () => {
+                const { ClientsInformation } = await import(
+                  './pages/private/ClientsInformation'
+                );
+                return { Component: ClientsInformation };
+              },
+            },
           ],
         },
-      ],
-    },
-    {
-      path: '/admin',
-      lazy: async () => {
-        const { ProtectorRoutes } = await import('./pages/ProtectecRoutes');
-        return { Component: ProtectorRoutes };
-      },
-      children: [
         {
-          path: '/admin/dashboard',
+          path: '/home/admin',
           lazy: async () => {
             const { Dashboard } = await import('./pages/admin/Dashboard');
             return { Component: Dashboard };
           },
-        },
-        {
-          path: '/admin/vehiclesmanagement',
-          lazy: async () => {
-            const { VehiclesManagement } = await import(
-              './pages/admin/VehiclesManagement'
-            );
-            return { Component: VehiclesManagement };
-          },
-        },
-        {
-          path: '/admin/clientsmanagement',
-          lazy: async () => {
-            const { ClientsManagement } = await import(
-              './pages/admin/ClientsManagement'
-            );
-            return { Component: ClientsManagement };
-          },
-        },
-        {
-          path: '/admin/reservationsmanagement',
-          lazy: async () => {
-            const { ReservationsManagement } = await import(
-              './pages/admin/ReservationsManagement'
-            );
-            return { Component: ReservationsManagement };
-          },
-        },
-        {
-          path: '/admin/reportsmanagement',
-          lazy: async () => {
-            const { ReportsManagement } = await import(
-              './pages/admin/ReportsManagement'
-            );
-            return { Component: ReportsManagement };
-          },
-        },
-        {
-          path: '/admin/employeesmanagement',
-          lazy: async () => {
-            const { EmployeesManagement } = await import(
-              './pages/admin/EmployeesManagement'
-            );
-            return { Component: EmployeesManagement };
-          },
-        },
-        {
-          path: '/admin/managersmanagement',
-          lazy: async () => {
-            const { ManagersManagement } = await import(
-              './pages/admin/ManagersManagement'
-            );
-            return { Component: ManagersManagement };
-          },
+          children: [
+            {
+              path: '/home/admin/vehicles-management',
+              lazy: async () => {
+                const { VehiclesManagement } = await import(
+                  './pages/admin/VehiclesManagement'
+                );
+                return { Component: VehiclesManagement };
+              },
+            },
+            {
+              path: '/home/admin/clients-management',
+              lazy: async () => {
+                const { ClientsManagement } = await import(
+                  './pages/admin/ClientsManagement'
+                );
+                return { Component: ClientsManagement };
+              },
+            },
+            {
+              path: '/home/admin/reservations-management',
+              lazy: async () => {
+                const { ReservationsManagement } = await import(
+                  './pages/admin/ReservationsManagement'
+                );
+                return { Component: ReservationsManagement };
+              },
+            },
+            {
+              path: '/home/admin/reports-management',
+              lazy: async () => {
+                const { ReportsManagement } = await import(
+                  './pages/admin/ReportsManagement'
+                );
+                return { Component: ReportsManagement };
+              },
+            },
+            {
+              path: '/home/admin/employees-management',
+              lazy: async () => {
+                const { EmployeesManagement } = await import(
+                  './pages/admin/EmployeesManagement'
+                );
+                return { Component: EmployeesManagement };
+              },
+            },
+            {
+              path: '/home/admin/managers-management',
+              lazy: async () => {
+                const { ManagersManagement } = await import(
+                  './pages/admin/ManagersManagement'
+                );
+                return { Component: ManagersManagement };
+              },
+            },
+          ],
         },
       ],
     },

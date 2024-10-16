@@ -1,182 +1,173 @@
-import {
-  AuthResponse,
-  LoginData,
-  PasswordChangeData,
-  RegisterData,
-  UserAccount,
-} from '../types/User.interface';
+import { AccountDetails, UserAccount } from '../types/User.interface';
 import axiosInstance from './axiosInterface';
 import Cookies from 'js-cookie';
 
-export const login = async (data: LoginData): Promise<AuthResponse> => {
+export const getUsersList = async (): Promise<UserAccount> => {
   try {
-    const response = await axiosInstance.post<AuthResponse>(
-      '/accounts/login/',
-      data
-    );
-    const { access, refresh } = response.data;
-
-    Cookies.set('accessToken', access, { secure: true, sameSite: 'strict' });
-    Cookies.set('refreshToken', refresh, {
-      secure: true,
-      sameSite: 'strict',
-      expires: 1,
-    });
-
+    const response = await axiosInstance.get<UserAccount>('/accounts/');
     return response.data;
   } catch (error: any) {
     console.error(
-      'Error during login',
+      'Error while fetching the users.',
+      error?.response?.data || error?.message
+    );
+    throw error.response?.data || new Error('Failed to fetch the users.');
+  }
+};
+
+export const getUserData = async (): Promise<UserAccount> => {
+  try {
+    const response = await axiosInstance.get<UserAccount>(`/accounts/user/`);
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      'Error while fetching the user data.',
+      error?.response?.data || error?.message
+    );
+    throw error.response?.data || new Error('Failed to fetch the user data.');
+  }
+};
+
+export const login = async (
+  user: Partial<UserAccount>
+): Promise<void> => {
+  try {
+    user.role = 'Client';
+    const response = await axiosInstance.post<any>(
+      '/accounts/login/',
+      user
+    );
+    Cookies.set('accessToken', response.data.access, { expires: 1 });
+    Cookies.set('refreshToken', response.data.refresh, { expires: 1 });
+  } catch (error: any) {
+    console.error(
+      'Error while logging in.',
       error?.response?.data || error?.message
     );
     throw error.response?.data || new Error('Failed to login.');
   }
 };
 
-export const refreshToken = async (refreshToken: string): Promise<string> => {
+export const register = async (user: UserAccount): Promise<UserAccount> => {
   try {
-    const response = await axiosInstance.post<AuthResponse>(
-      '/accounts/login/refresh/',
-      { refresh: refreshToken }
+    user.role = 'Client';
+    const response = await axiosInstance.post<UserAccount>(
+      '/accounts/register/',
+      user
     );
-
-    const { access, refresh } = response.data;
-
-    Cookies.set('accessToken', access, { secure: true, sameSite: 'strict' });
-    Cookies.set('refreshToken', refresh, {
-      secure: true,
-      sameSite: 'strict',
-      expires: 1,
-    });
-
-    return response.data.access;
+    return response.data;
   } catch (error: any) {
     console.error(
-      'Error while refreshing token.',
+      'Error while registering.',
       error?.response?.data || error?.message
     );
-    throw error.response?.data || new Error('Failed to refresh token.');
+    throw error.response?.data || new Error('Failed to register.');
   }
 };
 
 export const logout = async (): Promise<void> => {
   try {
     await axiosInstance.post('/accounts/logout/');
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
   } catch (error: any) {
     console.error(
-      'Error during logout.',
+      'Error while logging out.',
       error?.response?.data || error?.message
     );
     throw error.response?.data || new Error('Failed to logout.');
   }
 };
 
-export const registerUser = async (data: RegisterData): Promise<void> => {
-  try {
-    await axiosInstance.post('/accounts/register/', data);
-  } catch (error: any) {
-    console.error(
-      'Error during registration.',
-      error?.response?.data || error?.message
-    );
-    throw error.response?.data || new Error('Failed to register user.');
-  }
-};
-
-export const verifyEmail = async (token: string): Promise<void> => {
-  try {
-    await axiosInstance.post('/accounts/verify_email/', { token });
-  } catch (error: any) {
-    console.error(
-      'Error during email verification.',
-      error?.response?.data || error?.message
-    );
-    throw error.response?.data || new Error('Failed to verify email.');
-  }
-};
-
 export const updateUser = async (
-  data: Partial<UserAccount>
+  user: Partial<UserAccount>
 ): Promise<UserAccount> => {
   try {
     const response = await axiosInstance.patch<UserAccount>(
       '/accounts/update/',
-      data
+      user
     );
     return response.data;
   } catch (error: any) {
     console.error(
-      'Error during user update.',
+      'Error while updating the user.',
       error?.response?.data || error?.message
     );
-    throw error.response?.data || new Error('Failed to update user.');
+    throw error.response?.data || new Error('Failed to update the user.');
   }
 };
 
-export const getUserProfile = async (): Promise<UserAccount> => {
+export const requestDeleteUser = async (): Promise<void> => {
   try {
-    const response = await axiosInstance.get<UserAccount>('/accounts/profile/');
+    await axiosInstance.delete('/accounts/delete/');
+  } catch (error: any) {
+    console.error(
+      'Error while deleting the user.',
+      error?.response?.data || error?.message
+    );
+    throw error.response?.data || new Error('Failed to delete the user.');
+  }
+};
+
+export const confirmDeleteUser = async (token: string): Promise<void> => {
+  try {
+    await axiosInstance.delete(`/accounts/delete/confirm/${token}/`);
+  } catch (error: any) {
+    console.error(
+      'Error while confirming the deletion.',
+      error?.response?.data || error?.message
+    );
+    throw error.response?.data || new Error('Failed to confirm the deletion.');
+  }
+};
+
+export const getUserProfile = async (): Promise<AccountDetails> => {
+  try {
+    const response =
+      await axiosInstance.get<AccountDetails>('/accounts/profile/');
     return response.data;
   } catch (error: any) {
     console.error(
-      'Error while fetching user profile.',
-      error?.response?.data || error?.message
-    );
-    throw error.response?.data || new Error('Failed to fetch user profile.');
-  }
-};
-
-export const getUsersList = async (): Promise<UserAccount[]> => {
-  try {
-    const response = await axiosInstance.get<UserAccount[]>('/accounts/users/');
-    return response.data;
-  } catch (error: any) {
-    console.error(
-      'Error while fetching users list.',
-      error?.response?.data || error?.message
-    );
-    throw error.response?.data || new Error('Failed to fetch users.');
-  }
-};
-
-export const resetPassword = async (
-  data: PasswordChangeData
-): Promise<void> => {
-  try {
-    await axiosInstance.post('/accounts/reset-password/', data);
-  } catch (error: any) {
-    console.error(
-      'Error during password reset.',
-      error?.response?.data || error?.message
-    );
-    throw error.response?.data || new Error('Failed to reset password.');
-  }
-};
-
-export const requestAccountDeletion = async (): Promise<void> => {
-  try {
-    await axiosInstance.post('/accounts/delete/request/');
-  } catch (error: any) {
-    console.error(
-      'Error during account deletion request.',
+      'Error while fetching the user profile.',
       error?.response?.data || error?.message
     );
     throw (
-      error.response?.data || new Error('Failed to request account deletion.')
+      error.response?.data || new Error('Failed to fetch the user profile.')
     );
   }
 };
 
-export const confirmAccountDeletion = async (token: string): Promise<void> => {
+export const updateUserProfile = async (
+  profile: Partial<AccountDetails>
+): Promise<AccountDetails> => {
   try {
-    await axiosInstance.post('/accounts/delete/confirm/', { token });
+    const response = await axiosInstance.patch<AccountDetails>(
+      '/accounts/profile/update/',
+      profile
+    );
+    return response.data;
   } catch (error: any) {
     console.error(
-      'Error during account deletion confirmation.',
+      'Error while updating the user profile.',
       error?.response?.data || error?.message
     );
     throw (
-      error.response?.data || new Error('Failed to confirm account deletion.')
+      error.response?.data || new Error('Failed to update the user profile.')
     );
+  }
+};
+
+export const resetPassword = async (passwords: {
+  old_password: string;
+  new_password: string;
+}): Promise<void> => {
+  try {
+    await axiosInstance.post('/accounts/reset-password/', passwords);
+  } catch (error: any) {
+    console.error(
+      'Error while resetting the password.',
+      error?.response?.data || error?.message
+    );
+    throw error.response?.data || new Error('Failed to reset the password.');
   }
 };

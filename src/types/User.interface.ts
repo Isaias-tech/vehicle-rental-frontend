@@ -9,11 +9,11 @@ export interface AccountDetails {
 }
 
 export interface UserAccount {
+  role: string;
   email: string;
   first_name: string;
   last_name: string;
-  role?: number;
-  account_details: AccountDetails;
+  password?: string;
 }
 
 export interface LoginData {

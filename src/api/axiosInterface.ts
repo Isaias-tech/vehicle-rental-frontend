@@ -29,6 +29,8 @@ export const refreshJWTToken = async () => {
     Cookies.set('accessToken', newAccessToken);
     return newAccessToken;
   } catch (error) {
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
     throw new Error('Unable to refresh token');
   }
 };
