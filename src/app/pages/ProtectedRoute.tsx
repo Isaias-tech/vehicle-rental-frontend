@@ -1,12 +1,12 @@
+import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import Cookies from 'js-cookie';
-import { getUserData } from '../../api/userAccount.api';
+import { Layout } from './private/Layout';
 
-export const ProtectedRoutes = () => {
+export const ProtectedRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
-  const token = Cookies.get('accessToken');
+  const token = Cookies.get('access');
 
   const checkAuth = async () => {
     if (!token) {
@@ -16,12 +16,11 @@ export const ProtectedRoutes = () => {
     }
 
     try {
-      await getUserData();
       setIsAuthenticated(true);
     } catch (error) {
       setIsAuthenticated(false);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
 
@@ -34,12 +33,16 @@ export const ProtectedRoutes = () => {
       <div className="flex justify-center items-center h-screen">
         <button className="btn btn-ghost loading">Loading...</button>
       </div>
-    ); 
+    );
   }
 
   if (isAuthenticated) {
-    return <Outlet />; 
+    return (
+      <Layout>
+        <Outlet />
+      </Layout>
+    );
   }
 
-  return <Navigate to="/login" />; 
+  return <Navigate to="/login" />;
 };
