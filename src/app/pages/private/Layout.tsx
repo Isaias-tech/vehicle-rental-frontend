@@ -1,10 +1,29 @@
-import { ReactNode } from 'react';
+import { ReactNode, useEffect } from 'react';
 import Navbar from '../../../components/layout/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
-import { logout } from '../../../api/UserAccount.api';
+import { getUser, logout } from '../../../api/UserAccount.api';
+import Cookies from 'js-cookie';
 
 export const Layout = ({ children }: { children: ReactNode | ReactNode[] }) => {
   const navigate = useNavigate();
+
+  const checkAccessToken = async () => {
+    const token = Cookies.get('access');
+    if (token) {
+      try {
+        const user = await getUser();
+        if (user.role == "ADMINISTRATOR" || user.role == "MANAGER") {
+          navigate('/admin');
+        }
+      } catch (error) {
+        console.error('Invalid token:', error);
+        navigate('/login');
+      }
+    } else {
+      navigate('/login');
+    }
+    return false;
+  };
 
   const handleLogout = async () => {
     try {
@@ -14,6 +33,10 @@ export const Layout = ({ children }: { children: ReactNode | ReactNode[] }) => {
       console.error('Error logging out:', error);
     }
   };
+
+  useEffect(() => {
+    checkAccessToken();
+  }, []);
 
   return (
     <>

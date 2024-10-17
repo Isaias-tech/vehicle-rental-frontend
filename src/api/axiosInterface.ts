@@ -9,6 +9,24 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
+let isRefreshing = false;
+let failedQueue: any[] = [];
+
+const processQueue = (
+  error: AxiosError | null,
+  token: string | null = null
+) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
+
 export const getJWToken = () => {
   return Cookies.get('access');
 };
@@ -61,23 +79,35 @@ axiosInstance.interceptors.response.use(
   async (error: AxiosError) => {
     const originalRequest = error.config as CustomAxiosRequestConfig;
 
-    if (
-      originalRequest &&
-      error.response?.status === 401 &&
-      !originalRequest._retry
-    ) {
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise(function (resolve, reject) {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers.Authorization = `Bearer ${token}`;
+            return axiosInstance(originalRequest);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
+      }
+
       originalRequest._retry = true;
+      isRefreshing = true;
 
       try {
         const newAccessToken = await refreshJWTToken();
+        processQueue(null, newAccessToken);
 
-        originalRequest.headers = originalRequest.headers || {};
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-
         return axiosInstance(originalRequest);
-      } catch (refreshError) {
+      } catch (refreshError: any) {
+        processQueue(refreshError, null);
         console.error('Refresh token failed: ', refreshError);
         return Promise.reject(refreshError);
+      } finally {
+        isRefreshing = false;
       }
     }
 

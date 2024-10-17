@@ -36,8 +36,8 @@ export const login = async (user: Partial<UserAccount>) => {
 export const logout = async (): Promise<void> => {
   try {
     await axiosInstance.post('/accounts/logout/');
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
+    Cookies.remove('access');
+    Cookies.remove('refresh');
   } catch (error: any) {
     console.error(
       'Error while logging out.',
@@ -78,9 +78,13 @@ export const updateUser = async (
   }
 };
 
-export const deleteUser = async (): Promise<void> => {
+export const deleteUser = async (id: number | null = null): Promise<void> => {
   try {
-    await axiosInstance.delete('/accounts/user/');
+    if (id) {
+      await axiosInstance.delete(`/accounts/user/${id}/`);
+    } else {
+      await axiosInstance.delete('/accounts/user/');
+    }
   } catch (error: any) {
     console.error(
       'Error deleting user:',

@@ -45,8 +45,42 @@ export const createAppRouter = () => {
             const { ProfilePage } = await import('./pages/private/ProfilePage');
             return { Component: ProfilePage };
           },
-        }
-      ]
+        },
+      ],
+    },
+    {
+      path: '/admin',
+      lazy: async () => {
+        const { AdminPage } = await import('./pages/private/admin/AdminPage');
+        return { Component: AdminPage };
+      },
+      children: [
+        {
+          path: '/admin/profile',
+          lazy: async () => {
+            const { ProfilePage } = await import('./pages/private/ProfilePage');
+            return { Component: ProfilePage };
+          },
+        },
+        {
+          path: '/admin/vehicles',
+          lazy: async () => {
+            const { VehicleManagement } = await import(
+              './pages/private/admin/VehicleManagement'
+            );
+            return { Component: VehicleManagement };
+          },
+        },
+        {
+          path: '/admin/users',
+          lazy: async () => {
+            const { UserManagement } = await import(
+              './pages/private/admin/UserManagement'
+            );
+            return { Component: UserManagement };
+          },
+        },
+      ],
     },
     {
       path: '*',
