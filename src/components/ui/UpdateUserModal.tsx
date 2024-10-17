@@ -4,16 +4,27 @@ import { updateUser } from '../../api/UserAccount.api';
 
 interface UpdateUserProps {
   user: UserAccount;
+  currentUserRole: Role; // Pass the role of the logged-in user
   onClose: () => void;
 }
 
 export const UpdateUserModal: React.FC<UpdateUserProps> = ({
   user: initialUser,
+  currentUserRole,
   onClose,
 }) => {
   const [user, setUser] = useState<Partial<UserAccount>>(initialUser);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+
+  const getAvailableRoles = (): Role[] => {
+    if (currentUserRole === Role.ADMINISTRATOR) {
+      return Object.values(Role);
+    } else if (currentUserRole === Role.MANAGER) {
+      return [Role.EMPLOYEE, Role.CLIENT];
+    }
+    return [];
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,8 +32,15 @@ export const UpdateUserModal: React.FC<UpdateUserProps> = ({
     try {
       await updateUser(user);
       onClose();
-    } catch (error) {
-      setError('Failed to update user');
+    } catch (error: any) {
+      if (error.response.status === 403) {
+        setError('You are not authorized to update this user.');
+      } else {
+        setError(
+          error?.response?.data?.detail ||
+            'Failed to update user. Please try again.'
+        );
+      }
       console.error('Error updating user:', error);
     } finally {
       setLoading(false);
@@ -42,6 +60,7 @@ export const UpdateUserModal: React.FC<UpdateUserProps> = ({
               value={user.email || ''}
               onChange={(e) => setUser({ ...user, email: e.target.value })}
               required
+              disabled={loading} // Disable input when loading
             />
           </div>
           <div className="form-control">
@@ -52,6 +71,7 @@ export const UpdateUserModal: React.FC<UpdateUserProps> = ({
               value={user.first_name || ''}
               onChange={(e) => setUser({ ...user, first_name: e.target.value })}
               required
+              disabled={loading} // Disable input when loading
             />
           </div>
           <div className="form-control">
@@ -62,6 +82,7 @@ export const UpdateUserModal: React.FC<UpdateUserProps> = ({
               value={user.last_name || ''}
               onChange={(e) => setUser({ ...user, last_name: e.target.value })}
               required
+              disabled={loading} // Disable input when loading
             />
           </div>
           <div className="form-control">
@@ -72,8 +93,9 @@ export const UpdateUserModal: React.FC<UpdateUserProps> = ({
               onChange={(e) =>
                 setUser({ ...user, role: e.target.value as Role })
               }
+              disabled={loading} // Disable input when loading
             >
-              {Object.values(Role).map((role) => (
+              {getAvailableRoles().map((role) => (
                 <option key={role} value={role}>
                   {role}
                 </option>
@@ -85,10 +107,15 @@ export const UpdateUserModal: React.FC<UpdateUserProps> = ({
             <button
               className={`btn btn-primary ${loading ? 'loading' : ''}`}
               type="submit"
+              disabled={loading} // Disable button when loading
             >
               {loading ? 'Updating...' : 'Update'}
             </button>
-            <button className="btn" onClick={onClose}>
+            <button
+              className="btn"
+              onClick={onClose}
+              disabled={loading} // Disable button when loading
+            >
               Cancel
             </button>
           </div>

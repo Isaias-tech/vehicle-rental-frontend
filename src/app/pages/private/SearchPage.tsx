@@ -37,8 +37,11 @@ export const SearchPage = () => {
   return (
     <div className="h-full p-5">
       <div className="w-full">
-        <form onSubmit={handleSubmit} className="mb-5 flex flex-row justify-between items-center sticky z-[800] top-20">
-          <div className="form-control w-[65%]">  
+        <form
+          onSubmit={handleSubmit}
+          className="mb-5 flex flex-row justify-between items-center sticky z-[800] top-20 bg-slate-300 p-3 rounded-md"
+        >
+          <div className="form-control w-[65%]">
             <input
               type="text"
               placeholder="Search for a vehicle by name:"
@@ -60,7 +63,7 @@ export const SearchPage = () => {
 
         {error && <div className="alert alert-error my-5">{error}</div>}
 
-        <div className="w-full flex flex-wrap gap-4 justify-start">
+        <div className="w-full flex flex-wrap gap-4 justify-center items-center">
           {vehicles?.length > 0 ? (
             vehicles.map((vehicle, index) => (
               <VehicleCard key={index} vehicle={vehicle} />

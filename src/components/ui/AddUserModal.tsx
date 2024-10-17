@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Role, UserAccount } from '../../types/UserAccount';
-import { registerUser } from '../../api/UserAccount.api';
+import { registerUser, getUser } from '../../api/UserAccount.api'; // Assume `getUser` gets the logged-in user's info
 
 interface AddUserProps {
   onClose: () => void;
@@ -11,20 +11,44 @@ export const AddUserModal: React.FC<AddUserProps> = ({ onClose }) => {
     email: '',
     first_name: '',
     last_name: '',
-    role: Role.CLIENT,
+    role: Role.CLIENT, // Default to CLIENT
     password: '',
   });
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [currentUserRole, setCurrentUserRole] = useState<Role | null>(null);
+
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const currentUser = await getUser(); 
+        setCurrentUserRole(currentUser.role); 
+      } catch (err) {
+        console.error('Error fetching current user:', err);
+        setError('Failed to fetch current user role.');
+      }
+    };
+
+    fetchCurrentUser();
+  }, []);
+
+  const getAvailableRoles = (): Role[] => {
+    if (currentUserRole === Role.ADMINISTRATOR) {
+      return [Role.ADMINISTRATOR, Role.MANAGER, Role.EMPLOYEE, Role.CLIENT];
+    } else if (currentUserRole === Role.MANAGER) {
+      return [Role.EMPLOYEE, Role.CLIENT]; 
+    }
+    return [Role.CLIENT]; 
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     try {
       await registerUser(user);
-      onClose();
-    } catch (error) {
-      setError('Failed to add user');
+      onClose(); 
+    } catch (error: any) {
+      setError(error?.response?.data?.error || 'Failed to add user.');
       console.error('Error registering user:', error);
     } finally {
       setLoading(false);
@@ -75,7 +99,7 @@ export const AddUserModal: React.FC<AddUserProps> = ({ onClose }) => {
                 setUser({ ...user, role: e.target.value as Role })
               }
             >
-              {Object.values(Role).map((role) => (
+              {getAvailableRoles().map((role) => (
                 <option key={role} value={role}>
                   {role}
                 </option>
@@ -97,10 +121,11 @@ export const AddUserModal: React.FC<AddUserProps> = ({ onClose }) => {
             <button
               className={`btn btn-primary ${loading ? 'loading' : ''}`}
               type="submit"
+              disabled={loading} // Disable button when loading
             >
               Save
             </button>
-            <button className="btn" onClick={onClose}>
+            <button className="btn" onClick={onClose} disabled={loading}>
               Cancel
             </button>
           </div>

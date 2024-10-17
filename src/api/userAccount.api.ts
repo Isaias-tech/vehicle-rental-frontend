@@ -78,12 +78,53 @@ export const updateUser = async (
   }
 };
 
+export const getUsers = async (
+  page: number = 1
+): Promise<{
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: UserAccount[];
+}> => {
+  try {
+    const response = await axiosInstance.get(`/accounts/users/?page=${page}`);
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      'Error fetching users:',
+      error?.response?.data || error?.message
+    );
+    throw error?.response?.data || error?.message;
+  }
+};
+
+export const updateUserById = async (
+  id: number,
+  user: Partial<UserAccount>
+): Promise<UserAccount> => {
+  try {
+    const response = await axiosInstance.patch<UserAccount>(
+      `/accounts/users/update/${id}/`,
+      user
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      'Error updating user by ID:',
+      error?.response?.data || error?.message
+    );
+    throw error?.response?.data || error?.message;
+  }
+};
+
 export const deleteUser = async (id: number | null = null): Promise<void> => {
   try {
     if (id) {
-      await axiosInstance.delete(`/accounts/user/${id}/`);
+      // Deleting a user by ID (for admins and managers)
+      await axiosInstance.delete(`/accounts/users/delete/${id}/`);
     } else {
-      await axiosInstance.delete('/accounts/user/');
+      // Deleting the currently logged-in user
+      await axiosInstance.delete('/accounts/user/delete/');
     }
   } catch (error: any) {
     console.error(
@@ -96,7 +137,9 @@ export const deleteUser = async (id: number | null = null): Promise<void> => {
 
 export const getUserProfile = async (): Promise<UserProfile> => {
   try {
-    const response = await axiosInstance.get<UserProfile>(`/accounts/user/profile/`);
+    const response = await axiosInstance.get<UserProfile>(
+      `/accounts/user/profile/`
+    );
     return response.data;
   } catch (error: any) {
     console.error(

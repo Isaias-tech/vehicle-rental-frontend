@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { AddUserModal } from '../../../../components/ui/AddUserModal';
 import { UpdateUserModal } from '../../../../components/ui/UpdateUserModal';
-import { UserAccount } from '../../../../types/UserAccount';
-import { deleteUser, getUser } from '../../../../api/UserAccount.api';
+import { UserAccount, Role } from '../../../../types/UserAccount';
+import { deleteUser, getUsers, getUser } from '../../../../api/UserAccount.api';
 
 export const UserManagement = () => {
   const [users, setUsers] = useState<UserAccount[]>([]);
@@ -13,11 +13,33 @@ export const UserManagement = () => {
   const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
 
-  const fetchUsers = async () => {
-    setLoading(true);
+  const [currentUserRole, setCurrentUserRole] = useState<Role | null>(null);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [totalPages, setTotalPages] = useState<number>(1);
+  const [nextPage, setNextPage] = useState<string | null>(null);
+  const [prevPage, setPrevPage] = useState<string | null>(null);
+
+  const fetchCurrentUser = async () => {
     try {
       const user = await getUser();
-      setUsers([user]);
+      setCurrentUserRole(user.role);
+    } catch (error) {
+      console.error('Failed to fetch current user:', error);
+      setError('Failed to fetch current user.');
+    }
+  };
+
+  const fetchUsers = async (page: number = 1) => {
+    setLoading(true);
+    try {
+      const { results, next, previous, count } = await getUsers(page);
+      setUsers(results);
+      setNextPage(next);
+      setPrevPage(previous);
+
+      const pageSize = 10;
+      setTotalPages(Math.ceil(count / pageSize));
+      setCurrentPage(page);
     } catch (err: any) {
       setError('Failed to load users');
     } finally {
@@ -26,6 +48,7 @@ export const UserManagement = () => {
   };
 
   useEffect(() => {
+    fetchCurrentUser();
     fetchUsers();
   }, []);
 
@@ -33,7 +56,7 @@ export const UserManagement = () => {
     try {
       await deleteUser(id);
       setIsDeleteModalOpen(false);
-      fetchUsers();
+      fetchUsers(currentPage);
     } catch (error) {
       console.error('Error deleting user:', error);
       setError('Failed to delete user.');
@@ -48,6 +71,18 @@ export const UserManagement = () => {
   const confirmDelete = (user: UserAccount) => {
     setSelectedUser(user);
     setIsDeleteModalOpen(true);
+  };
+
+  const handleNextPage = () => {
+    if (nextPage) {
+      fetchUsers(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (prevPage) {
+      fetchUsers(currentPage - 1);
+    }
   };
 
   return (
@@ -89,7 +124,10 @@ export const UserManagement = () => {
                   <td>{user.first_name}</td>
                   <td>{user.last_name}</td>
                   <td>{user.role}</td>
-                  <td>{user.date_joined}</td>
+                  <td>
+                    {user.date_joined &&
+                      new Date(user.date_joined).toLocaleDateString()}
+                  </td>
                   <td>
                     <button
                       className="btn btn-warning btn-sm mr-2"
@@ -108,6 +146,27 @@ export const UserManagement = () => {
               ))}
             </tbody>
           </table>
+
+          {/* Pagination Controls */}
+          <div className="flex justify-between mt-4">
+            <button
+              className="btn btn-secondary"
+              onClick={handlePrevPage}
+              disabled={!prevPage}
+            >
+              Previous
+            </button>
+            <span className="text-sm">
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              className="btn btn-secondary"
+              onClick={handleNextPage}
+              disabled={!nextPage}
+            >
+              Next
+            </button>
+          </div>
         </>
       )}
 
@@ -116,18 +175,19 @@ export const UserManagement = () => {
         <AddUserModal
           onClose={() => {
             setIsAddModalOpen(false);
-            fetchUsers();
+            fetchUsers(currentPage);
           }}
         />
       )}
 
       {/* Update User Modal */}
-      {isUpdateModalOpen && selectedUser && (
+      {isUpdateModalOpen && selectedUser && currentUserRole && (
         <UpdateUserModal
           user={selectedUser}
+          currentUserRole={currentUserRole}
           onClose={() => {
             setIsUpdateModalOpen(false);
-            fetchUsers(); 
+            fetchUsers();
           }}
         />
       )}
