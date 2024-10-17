@@ -2,9 +2,9 @@ import { AccountDetails, UserAccount } from '../types/User.interface';
 import axiosInstance from './axiosInterface';
 import Cookies from 'js-cookie';
 
-export const getUsersList = async (): Promise<UserAccount> => {
+export const getUsersList = async (): Promise<UserAccount[]> => {
   try {
-    const response = await axiosInstance.get<UserAccount>('/accounts/');
+    const response = await axiosInstance.get<UserAccount[]>('/accounts/');
     return response.data;
   } catch (error: any) {
     console.error(
@@ -50,7 +50,7 @@ export const login = async (
 
 export const register = async (user: UserAccount): Promise<UserAccount> => {
   try {
-    user.role = 'Client';
+    if (!user.role) user.role = 'Client';
     const response = await axiosInstance.post<UserAccount>(
       '/accounts/register/',
       user

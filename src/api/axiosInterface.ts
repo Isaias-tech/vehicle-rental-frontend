@@ -19,7 +19,7 @@ export const refreshJWTToken = async () => {
     if (!refreshToken) throw new Error('No refresh token available.');
 
     const response = await axios.post(
-      `${import.meta.env.VITE_BACKEND_ENDPOINT}/accounts/login/refresh/`,
+      `${import.meta.env.VITE_BACKEND_ENDPOINT}/api/accounts/login/refresh/`,
       {
         refresh: refreshToken,
       }
@@ -36,7 +36,7 @@ export const refreshJWTToken = async () => {
 };
 
 const axiosInstance = axios.create({
-  baseURL: `${import.meta.env.VITE_BACKEND_ENDPOINT}`,
+  baseURL: `${import.meta.env.VITE_BACKEND_ENDPOINT}/api`,
   withCredentials: true,
 });
 

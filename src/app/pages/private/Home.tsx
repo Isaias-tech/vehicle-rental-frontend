@@ -2,9 +2,11 @@ import { useNavigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
 import Navbar from '../../../components/layout/Navbar';
 import Footer from '../../../components/layout/Footer';
-import { logout } from '../../../api/userAccount.api';
+import { getUserData, logout } from '../../../api/userAccount.api';
+import { useEffect, useState } from 'react';
 
 export const Home = () => {
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -15,6 +17,23 @@ export const Home = () => {
       console.error('Logout failed:', error);
     }
   };
+
+  const userData = async () => {
+    const user = await getUserData();
+    setIsAdmin(user.role === 'Administrator');
+  }
+
+  useEffect(() => {
+    if (isAdmin) {
+      navigate('/home/admin');
+    } else {
+      navigate('/home/search');
+    }
+  }, [isAdmin]);
+
+  useEffect(() => {
+    userData();
+  }, []);
 
   return (
     <>

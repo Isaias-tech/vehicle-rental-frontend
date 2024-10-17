@@ -16,7 +16,7 @@ const LoginForm = () => {
 
     try {
       await login({ email, password });
-      navigate('/home');
+      navigate('/home/search');
     } catch (e: any) {
       setError(e.response?.data?.message || 'Login failed. Please try again.');
     } finally {

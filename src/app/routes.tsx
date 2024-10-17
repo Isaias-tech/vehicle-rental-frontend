@@ -113,25 +113,7 @@ export const createAppRouter = () => {
           },
           children: [
             {
-              path: '/home/admin/vehicles-management',
-              lazy: async () => {
-                const { VehiclesManagement } = await import(
-                  './pages/admin/VehiclesManagement'
-                );
-                return { Component: VehiclesManagement };
-              },
-            },
-            {
-              path: '/home/admin/clients-management',
-              lazy: async () => {
-                const { ClientsManagement } = await import(
-                  './pages/admin/ClientsManagement'
-                );
-                return { Component: ClientsManagement };
-              },
-            },
-            {
-              path: '/home/admin/reservations-management',
+              path: '/home/admin/reservations',
               lazy: async () => {
                 const { ReservationsManagement } = await import(
                   './pages/admin/ReservationsManagement'
@@ -140,30 +122,30 @@ export const createAppRouter = () => {
               },
             },
             {
-              path: '/home/admin/reports-management',
+              path: '/home/admin/users',
+              lazy: async () => {
+                const { UsersManagement } = await import(
+                  './pages/admin/UsersManagement'
+                );
+                return { Component: UsersManagement };
+              },
+            },
+            {
+              path: '/home/admin/vehicles',
+              lazy: async () => {
+                const { VehiclesManagement } = await import(
+                  './pages/admin/VehiclesManagement'
+                );
+                return { Component: VehiclesManagement };
+              },
+            },
+            {
+              path: '/home/admin/reports',
               lazy: async () => {
                 const { ReportsManagement } = await import(
                   './pages/admin/ReportsManagement'
                 );
                 return { Component: ReportsManagement };
-              },
-            },
-            {
-              path: '/home/admin/employees-management',
-              lazy: async () => {
-                const { EmployeesManagement } = await import(
-                  './pages/admin/EmployeesManagement'
-                );
-                return { Component: EmployeesManagement };
-              },
-            },
-            {
-              path: '/home/admin/managers-management',
-              lazy: async () => {
-                const { ManagersManagement } = await import(
-                  './pages/admin/ManagersManagement'
-                );
-                return { Component: ManagersManagement };
               },
             },
           ],
