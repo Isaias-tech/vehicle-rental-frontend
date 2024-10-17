@@ -1,8 +1,9 @@
+import { UserAccount } from './UserAccount';
 import { Vehicle, VehicleDetails } from './Vehicle';
 
 export interface Reservation {
   id: number;
-  user: number; // Assuming user is represented by user ID
+  user: UserAccount; // Assuming user is represented by user ID
   vehicle: Vehicle;
   start_date: string; // ISO 8601 Date string (e.g., "2024-10-22T00:00:00Z")
   end_date: string; // ISO 8601 Date string

@@ -53,6 +53,15 @@ export const createAppRouter = () => {
             return { Component: ReservePage };
           },
         },
+        {
+          path: '/home/reservations/',
+          lazy: async () => {
+            const { UserReservations } = await import(
+              './pages/private/UserReservations'
+            );
+            return { Component: UserReservations };
+          },
+        },
       ],
     },
     {
@@ -85,6 +94,33 @@ export const createAppRouter = () => {
               './pages/private/admin/UserManagement'
             );
             return { Component: UserManagement };
+          },
+        },
+        {
+          path: '/admin/reservations',
+          lazy: async () => {
+            const { ReservationsManagement } = await import(
+              './pages/private/admin/ReservationsManagement'
+            );
+            return { Component: ReservationsManagement };
+          },
+        },
+        {
+          path: '/admin/reports',
+          lazy: async () => {
+            const { ReportsManagement } = await import(
+              './pages/private/admin/ReportsManagement'
+            );
+            return { Component: ReportsManagement };
+          },
+        },
+        {
+          path: '/admin/frequent-clients',
+          lazy: async () => {
+            const { FrequentClients } = await import(
+              './pages/private/admin/FrequentClients'
+            );
+            return { Component: FrequentClients };
           },
         },
       ],

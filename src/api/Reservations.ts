@@ -1,9 +1,11 @@
+import { ClientTransactionHistory } from '../types/ClientTransactionHistory';
 import {
   ReportFilterParams,
   ReportResponse,
   Reservation,
   ReservationFilterParams,
   ReservationListResponse,
+  Transaction,
   TransactionFilterParams,
   TransactionListResponse,
 } from '../types/Reservations';
@@ -78,7 +80,7 @@ export const listReservations = async (params?: ReservationFilterParams) => {
 
 export const listTransactions = async (params?: TransactionFilterParams) => {
   try {
-    const response = await axiosInstance.get<TransactionListResponse>(
+    const response = await axiosInstance.get<Transaction[]>(
       '/reservations/transactions/',
       {
         params,
@@ -106,6 +108,23 @@ export const generateReport = async (params?: ReportFilterParams) => {
   } catch (error: any) {
     console.error(
       'Error generating report:',
+      error?.response?.data || error?.message
+    );
+    throw error?.response?.data || error?.message;
+  }
+};
+
+export const getTopFrequentClients = async (): Promise<
+  ClientTransactionHistory[]
+> => {
+  try {
+    const response = await axiosInstance.get<ClientTransactionHistory[]>(
+      '/reservations/top-frequent-clients/'
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      'Error fetching top frequent clients:',
       error?.response?.data || error?.message
     );
     throw error?.response?.data || error?.message;

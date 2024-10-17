@@ -95,6 +95,16 @@ export const AdminPage = () => {
               >
                 Reports
               </NavLink>
+              <NavLink
+                to="/admin/frequent-clients"
+                className={({ isActive }) =>
+                  `py-2 px-6 text-lg font-medium hover:bg-gray-700 ${
+                    isActive ? 'bg-gray-700' : ''
+                  }`
+                }
+              >
+                Frequent clients
+              </NavLink>
             </nav>
           </aside>
 

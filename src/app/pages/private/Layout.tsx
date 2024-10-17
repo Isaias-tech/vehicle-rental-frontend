@@ -12,7 +12,7 @@ export const Layout = ({ children }: { children: ReactNode | ReactNode[] }) => {
     if (token) {
       try {
         const user = await getUser();
-        if (user.role == "ADMINISTRATOR" || user.role == "MANAGER") {
+        if (user.role == 'ADMINISTRATOR' || user.role == 'MANAGER') {
           navigate('/admin/profile');
         }
       } catch (error) {
@@ -41,7 +41,8 @@ export const Layout = ({ children }: { children: ReactNode | ReactNode[] }) => {
   return (
     <>
       <Navbar>
-        <div className="flex flex-row w-[50%] justify-evenly items-center">
+        <div className="flex flex-row w-[70%] justify-evenly items-center">
+          <Link to="/home/reservations">Reservations</Link>
           <Link to="/home/profile">Profile</Link>
           <Link to="/home/search">Search</Link>
           <button className="btn btn-primary" onClick={handleLogout}>
