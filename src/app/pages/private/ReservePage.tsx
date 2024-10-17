@@ -108,10 +108,7 @@ export const ReservePage: React.FC = () => {
         amount: price,
       };
 
-      const result = await createReservation(
-        reservationData,
-        paymentMethodNonce.nonce
-      );
+      await createReservation(reservationData, paymentMethodNonce.nonce);
       alert('Reservation successful!');
       setLoading(false);
       navigate('/home/reservations');

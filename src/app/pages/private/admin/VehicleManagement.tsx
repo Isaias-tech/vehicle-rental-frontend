@@ -18,7 +18,7 @@ export const VehicleManagement = () => {
   const fetchVehicles = async (page: number = 1) => {
     setLoading(true);
     try {
-      const { results, next, previous, count } = await getVehicles('', page);
+      const { results, count } = await getVehicles('', page);
       setVehicles(results);
       setCurrentPage(page);
 

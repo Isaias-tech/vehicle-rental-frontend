@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { UserAccount, Role } from '../../types/UserAccount';
-import { registerUser } from '../../api/UserAccount.api';
+import { registerUser } from '../../api/userAccount.api';
 
 const RegisterForm = ({ adminForm }: { adminForm?: boolean }) => {
   const [isLoading, setIsLoading] = useState(false);

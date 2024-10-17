@@ -7,7 +7,6 @@ import {
   ReservationListResponse,
   Transaction,
   TransactionFilterParams,
-  TransactionListResponse,
 } from '../types/Reservations';
 import axiosInstance from './axiosInterface';
 

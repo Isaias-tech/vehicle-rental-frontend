@@ -37,7 +37,8 @@ export const FrequentClients: React.FC = () => {
         {clients.map((clientData, index) => (
           <div key={index} className="card bg-base-100 shadow-lg p-4">
             <h3 className="text-lg font-bold">
-              {clientData.client.first_name} {clientData.client.last_name} ({clientData.client.email})
+              {clientData.client.first_name} {clientData.client.last_name} (
+              {clientData.client.email})
             </h3>
             <p>Number of Reservations: {clientData.transactions.length}</p>
 
@@ -58,8 +59,16 @@ export const FrequentClients: React.FC = () => {
                   <tr key={transaction.id}>
                     <td>{transaction.braintree_transaction_id}</td>
                     <td>{transaction.reservation.vehicle.name}</td>
-                    <td>{new Date(transaction.reservation.start_date).toLocaleDateString()}</td>
-                    <td>{new Date(transaction.reservation.end_date).toLocaleDateString()}</td>
+                    <td>
+                      {new Date(
+                        transaction.reservation.start_date
+                      ).toLocaleDateString()}
+                    </td>
+                    <td>
+                      {new Date(
+                        transaction.reservation.end_date
+                      ).toLocaleDateString()}
+                    </td>
                     <td>${transaction.amount}</td>
                     <td>{transaction.status}</td>
                   </tr>

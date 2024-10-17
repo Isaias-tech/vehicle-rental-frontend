@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import LoginForm from '../../../components/ui/LoginForm';
-import { getUser } from '../../../api/UserAccount.api';
+import { getUser } from '../../../api/userAccount.api';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 

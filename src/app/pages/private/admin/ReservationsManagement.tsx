@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Transaction } from '../../../../types/Reservations';
-import { cancelReservation, listTransactions } from '../../../../api/Reservations';
+import {
+  cancelReservation,
+  listTransactions,
+} from '../../../../api/Reservations';
 import Modal from '../../../../components/ui/Modal';
 
 export const ReservationsManagement: React.FC = () => {

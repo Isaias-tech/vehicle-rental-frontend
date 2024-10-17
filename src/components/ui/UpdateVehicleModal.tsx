@@ -11,7 +11,10 @@ export const UpdateVehicle: React.FC<UpdateVehicleProps> = ({
   vehicle: initialVehicle,
   onClose,
 }) => {
-  const [vehicle, setVehicle] = useState<Omit<Vehicle, 'picture1' | 'picture2' | 'picture3' | 'picture4'>>(initialVehicle);
+  const [vehicle, setVehicle] =
+    useState<Omit<Vehicle, 'picture1' | 'picture2' | 'picture3' | 'picture4'>>(
+      initialVehicle
+    );
   const [picture1, setPicture1] = useState<File | null>(null);
   const [picture2, setPicture2] = useState<File | null>(null);
   const [picture3, setPicture3] = useState<File | null>(null);
@@ -46,7 +49,7 @@ export const UpdateVehicle: React.FC<UpdateVehicleProps> = ({
     try {
       await updateVehicle(initialVehicle.id!, formData);
       console.log('Vehicle updated successfully:', vehicle);
-      onClose(); 
+      onClose();
     } catch (error: any) {
       setError('Failed to update vehicle. Please try again.');
       console.error('Error updating vehicle:', error);
@@ -88,7 +91,9 @@ export const UpdateVehicle: React.FC<UpdateVehicleProps> = ({
               type="text"
               className="input input-bordered"
               value={vehicle.model}
-              onChange={(e) => setVehicle({ ...vehicle, model: e.target.value })}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, model: e.target.value })
+              }
               required
             />
           </div>
@@ -99,7 +104,9 @@ export const UpdateVehicle: React.FC<UpdateVehicleProps> = ({
               type="number"
               className="input input-bordered"
               value={vehicle.year}
-              onChange={(e) => setVehicle({ ...vehicle, year: +e.target.value })}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, year: +e.target.value })
+              }
               required
             />
           </div>
@@ -110,7 +117,9 @@ export const UpdateVehicle: React.FC<UpdateVehicleProps> = ({
               type="number"
               className="input input-bordered"
               value={vehicle.price}
-              onChange={(e) => setVehicle({ ...vehicle, price: +e.target.value })}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, price: +e.target.value })
+              }
               required
             />
           </div>
@@ -160,7 +169,9 @@ export const UpdateVehicle: React.FC<UpdateVehicleProps> = ({
             <input
               type="file"
               className="file-input file-input-bordered"
-              onChange={(e) => setPicture1(e.target.files ? e.target.files[0] : null)}
+              onChange={(e) =>
+                setPicture1(e.target.files ? e.target.files[0] : null)
+              }
             />
           </div>
 
@@ -169,7 +180,9 @@ export const UpdateVehicle: React.FC<UpdateVehicleProps> = ({
             <input
               type="file"
               className="file-input file-input-bordered"
-              onChange={(e) => setPicture2(e.target.files ? e.target.files[0] : null)}
+              onChange={(e) =>
+                setPicture2(e.target.files ? e.target.files[0] : null)
+              }
             />
           </div>
 
@@ -178,7 +191,9 @@ export const UpdateVehicle: React.FC<UpdateVehicleProps> = ({
             <input
               type="file"
               className="file-input file-input-bordered"
-              onChange={(e) => setPicture3(e.target.files ? e.target.files[0] : null)}
+              onChange={(e) =>
+                setPicture3(e.target.files ? e.target.files[0] : null)
+              }
             />
           </div>
 
@@ -187,7 +202,9 @@ export const UpdateVehicle: React.FC<UpdateVehicleProps> = ({
             <input
               type="file"
               className="file-input file-input-bordered"
-              onChange={(e) => setPicture4(e.target.files ? e.target.files[0] : null)}
+              onChange={(e) =>
+                setPicture4(e.target.files ? e.target.files[0] : null)
+              }
             />
           </div>
 

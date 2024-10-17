@@ -7,7 +7,9 @@ interface AddVehicleProps {
 }
 
 export const AddVehicle: React.FC<AddVehicleProps> = ({ onClose }) => {
-  const [vehicle, setVehicle] = useState<Omit<Vehicle, 'picture1' | 'picture2' | 'picture3' | 'picture4'>>({
+  const [vehicle, setVehicle] = useState<
+    Omit<Vehicle, 'picture1' | 'picture2' | 'picture3' | 'picture4'>
+  >({
     name: '',
     make: '',
     model: '',
@@ -100,7 +102,9 @@ export const AddVehicle: React.FC<AddVehicleProps> = ({ onClose }) => {
               type="text"
               className="input input-bordered"
               value={vehicle.model}
-              onChange={(e) => setVehicle({ ...vehicle, model: e.target.value })}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, model: e.target.value })
+              }
               required
             />
           </div>
@@ -124,7 +128,9 @@ export const AddVehicle: React.FC<AddVehicleProps> = ({ onClose }) => {
               type="number"
               className="input input-bordered"
               value={vehicle.price}
-              onChange={(e) => setVehicle({ ...vehicle, price: +e.target.value })}
+              onChange={(e) =>
+                setVehicle({ ...vehicle, price: +e.target.value })
+              }
               required
             />
           </div>
@@ -174,7 +180,9 @@ export const AddVehicle: React.FC<AddVehicleProps> = ({ onClose }) => {
             <input
               type="file"
               className="file-input file-input-bordered"
-              onChange={(e) => setPicture1(e.target.files ? e.target.files[0] : null)}
+              onChange={(e) =>
+                setPicture1(e.target.files ? e.target.files[0] : null)
+              }
               required
             />
           </div>
@@ -185,7 +193,9 @@ export const AddVehicle: React.FC<AddVehicleProps> = ({ onClose }) => {
             <input
               type="file"
               className="file-input file-input-bordered"
-              onChange={(e) => setPicture2(e.target.files ? e.target.files[0] : null)}
+              onChange={(e) =>
+                setPicture2(e.target.files ? e.target.files[0] : null)
+              }
             />
           </div>
 
@@ -194,7 +204,9 @@ export const AddVehicle: React.FC<AddVehicleProps> = ({ onClose }) => {
             <input
               type="file"
               className="file-input file-input-bordered"
-              onChange={(e) => setPicture3(e.target.files ? e.target.files[0] : null)}
+              onChange={(e) =>
+                setPicture3(e.target.files ? e.target.files[0] : null)
+              }
             />
           </div>
 
@@ -203,7 +215,9 @@ export const AddVehicle: React.FC<AddVehicleProps> = ({ onClose }) => {
             <input
               type="file"
               className="file-input file-input-bordered"
-              onChange={(e) => setPicture4(e.target.files ? e.target.files[0] : null)}
+              onChange={(e) =>
+                setPicture4(e.target.files ? e.target.files[0] : null)
+              }
             />
           </div>
 

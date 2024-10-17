@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { AddUserModal } from '../../../../components/ui/AddUserModal';
 import { UpdateUserModal } from '../../../../components/ui/UpdateUserModal';
 import { UserAccount, Role } from '../../../../types/UserAccount';
-import { deleteUser, getUsers, getUser } from '../../../../api/UserAccount.api';
+import { deleteUser, getUsers, getUser } from '../../../../api/userAccount.api';
 
 export const UserManagement = () => {
   const [users, setUsers] = useState<UserAccount[]>([]);

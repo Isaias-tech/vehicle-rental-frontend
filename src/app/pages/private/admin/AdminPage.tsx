@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import { getUser, logout } from '../../../../api/UserAccount.api';
+import { getUser, logout } from '../../../../api/userAccount.api';
 import Navbar from '../../../../components/layout/Navbar';
 
 export const AdminPage = () => {

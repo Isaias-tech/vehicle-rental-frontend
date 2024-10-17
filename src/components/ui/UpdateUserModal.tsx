@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Role, UserAccount } from '../../types/UserAccount';
-import { updateUser } from '../../api/UserAccount.api';
+import { updateUser } from '../../api/userAccount.api';
 
 interface UpdateUserProps {
   user: UserAccount;

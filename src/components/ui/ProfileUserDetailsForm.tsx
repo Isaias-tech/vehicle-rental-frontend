@@ -1,4 +1,4 @@
-import { getUserProfile, updateUserProfile } from '../../api/UserAccount.api';
+import { getUserProfile, updateUserProfile } from '../../api/userAccount.api';
 import { UserProfile } from '../../types/UserAccount';
 import { useState, useEffect } from 'react';
 

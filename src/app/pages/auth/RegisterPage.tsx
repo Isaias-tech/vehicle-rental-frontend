@@ -2,7 +2,7 @@ import RegisterForm from '../../../components/ui/RegisterForm';
 import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie';
 import { useEffect } from 'react';
-import { getUser } from '../../../api/UserAccount.api';
+import { getUser } from '../../../api/userAccount.api';
 
 export const RegisterPage = () => {
   const navigate = useNavigate();

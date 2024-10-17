@@ -21,7 +21,10 @@ export const LandingPage = () => {
     <>
       <Navbar>
         <div className="flex flex-row w-[50%] justify-evenly items-center">
-          <button onClick={handleRegister} className="btn btn-outline btn-primary">
+          <button
+            onClick={handleRegister}
+            className="btn btn-outline btn-primary"
+          >
             Register
           </button>
           <button onClick={handleLogin} className="btn btn-primary">

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { UserAccount } from '../../types/UserAccount';
-import { updateUser, getUser } from '../../api/UserAccount.api';
+import { updateUser, getUser } from '../../api/userAccount.api';
 
 export const ProfileUserForm = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -80,7 +80,10 @@ export const ProfileUserForm = () => {
         <label className="label">
           <span className="label-text">Member since:</span>
         </label>
-        <p>{userData?.date_joined && new Date(userData.date_joined).toLocaleDateString()}</p>
+        <p>
+          {userData?.date_joined &&
+            new Date(userData.date_joined).toLocaleDateString()}
+        </p>
       </div>
       <div className="flex flex-row justify-between items-center">
         <label className="label">

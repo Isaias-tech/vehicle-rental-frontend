@@ -1,7 +1,7 @@
 import { ReactNode, useEffect } from 'react';
 import Navbar from '../../../components/layout/Navbar';
 import { Link, useNavigate } from 'react-router-dom';
-import { getUser, logout } from '../../../api/UserAccount.api';
+import { getUser, logout } from '../../../api/userAccount.api';
 import Cookies from 'js-cookie';
 
 export const Layout = ({ children }: { children: ReactNode | ReactNode[] }) => {

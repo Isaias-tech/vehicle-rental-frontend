@@ -1,7 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { UserAccount } from '../../types/UserAccount';
-import { login } from '../../api/UserAccount.api';
+import { login } from '../../api/userAccount.api';
 
 const LoginForm = () => {
   const [isLoading, setIsLoading] = useState(false);

@@ -1,4 +1,4 @@
-import { deleteUser } from '../../../api/UserAccount.api';
+import { deleteUser } from '../../../api/userAccount.api';
 import { ProfileUserDetailsForm } from '../../../components/ui/ProfileUserDetailsForm';
 import { ProfileUserForm } from '../../../components/ui/ProfileUserForm';
 
@@ -15,7 +15,7 @@ export const ProfilePage = () => {
     }
   };
   return (
-    <div className='flex flex-col justify-center items-center'>
+    <div className="flex flex-col justify-center items-center">
       <div className="card bg-base-100 w-96 shadow-xl mb-10">
         <div className="card-body">
           <h2 className="card-title text-2xl">User data:</h2>

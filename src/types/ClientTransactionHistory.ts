@@ -1,9 +1,7 @@
-import { Transaction } from "./Reservations";
-import { UserAccount } from "./UserAccount";
+import { Transaction } from './Reservations';
+import { UserAccount } from './UserAccount';
 
-  
-  export interface ClientTransactionHistory {
-    client: UserAccount;
-    transactions: Transaction[];
-  }
-  
+export interface ClientTransactionHistory {
+  client: UserAccount;
+  transactions: Transaction[];
+}

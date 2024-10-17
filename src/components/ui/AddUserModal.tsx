@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Role, UserAccount } from '../../types/UserAccount';
-import { registerUser, getUser } from '../../api/UserAccount.api'; // Assume `getUser` gets the logged-in user's info
+import { registerUser, getUser } from '../../api/userAccount.api'; // Assume `getUser` gets the logged-in user's info
 
 interface AddUserProps {
   onClose: () => void;
@@ -21,8 +21,8 @@ export const AddUserModal: React.FC<AddUserProps> = ({ onClose }) => {
   useEffect(() => {
     const fetchCurrentUser = async () => {
       try {
-        const currentUser = await getUser(); 
-        setCurrentUserRole(currentUser.role); 
+        const currentUser = await getUser();
+        setCurrentUserRole(currentUser.role);
       } catch (err) {
         console.error('Error fetching current user:', err);
         setError('Failed to fetch current user role.');
@@ -36,9 +36,9 @@ export const AddUserModal: React.FC<AddUserProps> = ({ onClose }) => {
     if (currentUserRole === Role.ADMINISTRATOR) {
       return [Role.ADMINISTRATOR, Role.MANAGER, Role.EMPLOYEE, Role.CLIENT];
     } else if (currentUserRole === Role.MANAGER) {
-      return [Role.EMPLOYEE, Role.CLIENT]; 
+      return [Role.EMPLOYEE, Role.CLIENT];
     }
-    return [Role.CLIENT]; 
+    return [Role.CLIENT];
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -46,7 +46,7 @@ export const AddUserModal: React.FC<AddUserProps> = ({ onClose }) => {
     setLoading(true);
     try {
       await registerUser(user);
-      onClose(); 
+      onClose();
     } catch (error: any) {
       setError(error?.response?.data?.error || 'Failed to add user.');
       console.error('Error registering user:', error);
