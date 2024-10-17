@@ -15,7 +15,7 @@ export const getJWToken = () => {
 
 export const refreshJWTToken = async () => {
   try {
-    const refreshToken = Cookies.get('refreshToken');
+    const refreshToken = Cookies.get('refresh');
     if (!refreshToken) throw new Error('No refresh token available.');
 
     const response = await axios.post(
@@ -26,11 +26,11 @@ export const refreshJWTToken = async () => {
     );
 
     const newAccessToken = response.data.access;
-    Cookies.set('accessToken', newAccessToken);
+    Cookies.set('access', newAccessToken);
     return newAccessToken;
   } catch (error) {
-    Cookies.remove('accessToken');
-    Cookies.remove('refreshToken');
+    Cookies.remove('access');
+    Cookies.remove('refresh');
     throw new Error('Unable to refresh token');
   }
 };

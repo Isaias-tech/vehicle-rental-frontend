@@ -32,3 +32,18 @@ export const login = async (user: Partial<UserAccount>) => {
     throw error?.response?.data || error?.message;
   }
 };
+
+export const logout = async (): Promise<void> => {
+  try {
+    await axiosInstance.post('/accounts/logout/');
+    Cookies.remove('accessToken');
+    Cookies.remove('refreshToken');
+  } catch (error: any) {
+    console.error(
+      'Error while logging out.',
+      error?.response?.data || error?.message
+    );
+    throw error.response?.data || new Error('Failed to logout.');
+  }
+};
+

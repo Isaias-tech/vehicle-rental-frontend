@@ -22,6 +22,29 @@ export const createAppRouter = () => {
             const { RegisterPage } = await import('./pages/auth/RegisterPage');
             return { Component: RegisterPage };
           },
+        },
+      ],
+    },
+    {
+      path: '/home',
+      lazy: async () => {
+        const { ProtectedRoute } = await import('./pages/ProtectedRoute');
+        return { Component: ProtectedRoute };
+      },
+      children: [
+        {
+          path: '/home/search',
+          lazy: async () => {
+            const { SearchPage } = await import('./pages/private/SearchPage');
+            return { Component: SearchPage };
+          },
+        },
+        {
+          path: '/home/profile',
+          lazy: async () => {
+            const { ProfilePage } = await import('./pages/private/ProfilePage');
+            return { Component: ProfilePage };
+          },
         }
       ]
     },

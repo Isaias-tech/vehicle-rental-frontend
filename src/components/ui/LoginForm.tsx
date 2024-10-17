@@ -32,7 +32,7 @@ const LoginForm = () => {
     try {
       await login(userAccount);
       setIsLoading(false);
-      navigate('/login');
+      navigate('/home');
     } catch (err) {
       setIsLoading(false);
       setError('Login failed. Please try again.');
