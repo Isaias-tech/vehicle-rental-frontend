@@ -21,12 +21,12 @@ export interface Vehicle {
 
 export interface VehicleDetails {
     id?: number;
-    vehicle?: number | Vehicle;
-    mileage?: number;
-    color?: string;
+    vehicle: Vehicle;
+    mileage: number;
+    color: string;
     is_new: boolean;
-    is_automatic?: boolean;
-    has_air_conditioning?: boolean;
+    is_automatic: boolean;
+    has_air_conditioning: boolean;
     description: string;
     created_at?: string;
     updated_at?: string;

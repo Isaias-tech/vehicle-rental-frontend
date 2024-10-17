@@ -46,6 +46,13 @@ export const createAppRouter = () => {
             return { Component: ProfilePage };
           },
         },
+        {
+          path: '/home/reserve/:vehicle_id',
+          lazy: async () => {
+            const { ReservePage } = await import('./pages/private/ReservePage');
+            return { Component: ReservePage };
+          },
+        },
       ],
     },
     {

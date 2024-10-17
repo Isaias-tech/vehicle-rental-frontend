@@ -13,7 +13,7 @@ export const Layout = ({ children }: { children: ReactNode | ReactNode[] }) => {
       try {
         const user = await getUser();
         if (user.role == "ADMINISTRATOR" || user.role == "MANAGER") {
-          navigate('/admin');
+          navigate('/admin/profile');
         }
       } catch (error) {
         console.error('Invalid token:', error);

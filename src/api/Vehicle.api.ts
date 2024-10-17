@@ -71,7 +71,7 @@ export const getVehicleDetail = async (
   vehicle_id: number
 ): Promise<VehicleDetails> => {
   try {
-    const response = await axiosInstance.get(`/vehicles/detail/${vehicle_id}/`);
+    const response = await axiosInstance.get(`/vehicles/details/${vehicle_id}/`);
     return response.data;
   } catch (error: any) {
     console.error(
