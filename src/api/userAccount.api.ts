@@ -1,4 +1,4 @@
-import { UserAccount } from '../types/UserAccount';
+import { UserAccount, UserProfile } from '../types/UserAccount';
 import axiosInstance from './axiosInterface';
 import Cookies from 'js-cookie';
 
@@ -47,3 +47,76 @@ export const logout = async (): Promise<void> => {
   }
 };
 
+export const getUser = async (): Promise<UserAccount> => {
+  try {
+    const response = await axiosInstance.get<UserAccount>('/accounts/user/');
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      'Error getting user:',
+      error?.response?.data || error?.message
+    );
+    throw error?.response?.data || error?.message;
+  }
+};
+
+export const updateUser = async (
+  user: Partial<UserAccount>
+): Promise<UserAccount> => {
+  try {
+    const response = await axiosInstance.patch<UserAccount>(
+      '/accounts/user/update/',
+      user
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      'Error updating user:',
+      error?.response?.data || error?.message
+    );
+    throw error?.response?.data || error?.message;
+  }
+};
+
+export const deleteUser = async (): Promise<void> => {
+  try {
+    await axiosInstance.delete('/accounts/user/');
+  } catch (error: any) {
+    console.error(
+      'Error deleting user:',
+      error?.response?.data || error?.message
+    );
+    throw error?.response?.data || error?.message;
+  }
+};
+
+export const getUserProfile = async (): Promise<UserProfile> => {
+  try {
+    const response = await axiosInstance.get<UserProfile>(`/accounts/user/profile/`);
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      'Error getting user profile:',
+      error?.response?.data || error?.message
+    );
+    throw error?.response?.data || error?.message;
+  }
+};
+
+export const updateUserProfile = async (
+  profile: Partial<UserProfile> | FormData
+): Promise<UserProfile> => {
+  try {
+    const response = await axiosInstance.patch<UserProfile>(
+      '/accounts/user/profile/update/',
+      profile
+    );
+    return response.data;
+  } catch (error: any) {
+    console.error(
+      'Error updating user profile:',
+      error?.response?.data || error?.message
+    );
+    throw error?.response?.data || error?.message;
+  }
+};

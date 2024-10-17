@@ -16,15 +16,15 @@ export interface UserAccount {
 }
 
 export interface UserProfile {
-  user?: number;
+  user?: number | UserAccount;
   birth_date?: string;
   gender?: string;
   profile_picture?: File;
   passport?: File;
-  driver_license?: File;
+  drivers_license?: File;
   national_id?: File;
   phone_number?: string;
   country?: string;
   city?: string;
-  adress?: string;
+  address?: string;
 }

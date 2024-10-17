@@ -10,7 +10,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
 }
 
 export const getJWToken = () => {
-  return Cookies.get('accessToken');
+  return Cookies.get('access');
 };
 
 export const refreshJWTToken = async () => {
