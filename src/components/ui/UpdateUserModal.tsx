@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Role, UserAccount } from '../../types/UserAccount';
-import { updateUser } from '../../api/userAccount.api';
+import { updateUserById } from '../../api/userAccount.api';
 
 interface UpdateUserProps {
   user: UserAccount;
@@ -30,7 +30,7 @@ export const UpdateUserModal: React.FC<UpdateUserProps> = ({
     e.preventDefault();
     setLoading(true);
     try {
-      await updateUser(user);
+      await updateUserById(user.id!, user);
       onClose();
     } catch (error: any) {
       if (error.response.status === 403) {
