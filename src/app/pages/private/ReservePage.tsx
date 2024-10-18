@@ -129,54 +129,122 @@ export const ReservePage: React.FC = () => {
         Reserve {vehicleDetails.vehicle?.name}
       </h2>
 
-      <div className="mb-4">
-        <img
-          src={vehicleDetails.vehicle?.picture1}
-          alt={vehicleDetails.vehicle?.name}
-          className="w-full h-64 object-cover rounded-lg"
-        />
-        <p>{vehicleDetails.description}</p>
-        <p>Mileage: {vehicleDetails.mileage}</p>
-        <p>Price per Day: ${vehicleDetails.vehicle?.price_per_day}</p>
+      <div>
+        <div className="carousel w-full">
+          {/* First image (mandatory) */}
+          <div id="item1" className="carousel-item w-full">
+            <img
+              src={vehicleDetails.vehicle?.picture1}
+              alt="Vehicle Image 1"
+              className="w-full h-64 object-cover rounded-lg"
+            />
+          </div>
+
+          {/* Second image (optional) */}
+          {vehicleDetails.vehicle?.picture2 && (
+            <div id="item2" className="carousel-item w-full">
+              <img
+                src={vehicleDetails.vehicle?.picture2}
+                alt="Vehicle Image 2"
+                className="w-full h-64 object-cover rounded-lg"
+              />
+            </div>
+          )}
+
+          {/* Third image (optional) */}
+          {vehicleDetails.vehicle?.picture3 && (
+            <div id="item3" className="carousel-item w-full">
+              <img
+                src={vehicleDetails.vehicle?.picture3}
+                alt="Vehicle Image 3"
+                className="w-full h-64 object-cover rounded-lg"
+              />
+            </div>
+          )}
+
+          {/* Fourth image (optional) */}
+          {vehicleDetails.vehicle?.picture4 && (
+            <div id="item4" className="carousel-item w-full">
+              <img
+                src={vehicleDetails.vehicle?.picture4}
+                alt="Vehicle Image 4"
+                className="w-full h-64 object-cover rounded-lg"
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="flex w-full justify-center gap-2 py-2">
+          <a href="#item1" className="btn btn-xs">
+            1
+          </a>
+          {vehicleDetails.vehicle?.picture2 && (
+            <a href="#item2" className="btn btn-xs">
+              2
+            </a>
+          )}
+          {vehicleDetails.vehicle?.picture3 && (
+            <a href="#item3" className="btn btn-xs">
+              3
+            </a>
+          )}
+          {vehicleDetails.vehicle?.picture4 && (
+            <a href="#item4" className="btn btn-xs">
+              4
+            </a>
+          )}
+        </div>
       </div>
 
-      <div className="mb-4">
-        <label htmlFor="start_date" className="block text-sm font-medium">
-          Start Date
-        </label>
-        <DatePicker
-          selected={startDate}
-          onChange={(date: Date | null) => setStartDate(date || undefined)}
-          selectsStart
-          startDate={startDate}
-          endDate={endDate}
-          className="border p-2 w-full rounded"
-        />
+      <div className='w-full flex flex-row justify-between items-center'>
+      <div>
+        <div className="mb-4">
+          <p>{vehicleDetails.description}</p>
+          <p><strong>Mileage:</strong> {vehicleDetails.mileage}</p>
+          <p><strong>Price per Day:</strong> ${vehicleDetails.vehicle?.price_per_day}</p>
+        </div>
 
-        <label htmlFor="end_date" className="block text-sm font-medium mt-4">
-          End Date
-        </label>
-        <DatePicker
-          selected={endDate}
-          onChange={(date: Date | null) => setEndDate(date || undefined)}
-          selectsEnd
-          startDate={startDate}
-          endDate={endDate}
-          minDate={startDate}
-          className="border p-2 w-full rounded"
-        />
+        <div className="mb-4">
+          <label htmlFor="start_date" className="block text-sm font-medium">
+            Start Date
+          </label>
+          <DatePicker
+            selected={startDate}
+            onChange={(date: Date | null) => setStartDate(date || undefined)}
+            selectsStart
+            startDate={startDate}
+            endDate={endDate}
+            className="border p-2 w-full rounded"
+          />
+
+          <label htmlFor="end_date" className="block text-sm font-medium mt-4">
+            End Date
+          </label>
+          <DatePicker
+            selected={endDate}
+            onChange={(date: Date | null) => setEndDate(date || undefined)}
+            selectsEnd
+            startDate={startDate}
+            endDate={endDate}
+            minDate={startDate}
+            className="border p-2 w-full rounded"
+          />
+        </div>
+
+        <div className="mb-4">
+          <p><strong>Total Price:</strong> ${price.toFixed(2)}</p>
+        </div>
       </div>
 
-      <div className="mb-4">
-        <p>Total Price: ${price.toFixed(2)}</p>
+      <div className='max-w-[500px] w-full'>
+        <div id="dropin-container" className="mb-4"></div>
       </div>
-
-      <div id="dropin-container" className="mb-4"></div>
+      </div>
 
       <button
         onClick={handleReservation}
         disabled={loading}
-        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 w-full"
       >
         {loading ? 'Processing...' : 'Reserve Now'}
       </button>
